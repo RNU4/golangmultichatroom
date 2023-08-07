@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<style>
+
+
+</style>
+
+    <title>Chat</title>
+
+
+</head>
+<body>
+
+
+    <center>
+        <h3 style = "color: #625EF0;">Channels</h3>
+      </center>
+
+    <div id = "box">
+    <input type="text" id="input" class="form-control" placeholder="Enter Channel name..." autofocus />
+    </div>
+
+
+<script>
+var channel = document.getElementById("box");
+for (var i = 0; i<=10; i++)
+    channel.innerHTML+="<a href='channel/"+i+"'>Channel "+i+"</a>"
+
+var text = document.getElementById("input");
+text.onkeydown = function (e) {
+	if (e.keyCode === 13 && text.value !== "") {
+        window.location.href = window.location.href+"channel/"+text.value
+		text.value = "";
+	}
+};
+
+
+</script>
+
+<style>
+    body{
+    background-color: #141432;
+    width: 100%;
+    height: 100%;
+    font-family: Helvetica;
+    font-size: 1.5rem;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding: 0px;
+    margin: 0px;
+}
+a{
+margin: auto;
+background-color: #625EF0;
+text-decoration: none;
+color: black;
+border-radius: 10px;
+width:20vw;
+height:5vmin;
+margin-top: 10px;
+margin-bottom: 10px;
+padding: 10px;
+font-size: 5vmin;
+text-align: center;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+}
+input{
+    margin: auto;
+    padding: 10px;
+    font-size : x-large;
+    background-color: #625EF0;
+    outline-style:none;
+    color: black;
+    border-radius: 10px;
+    outline-color: transparent;
+    border-width: 0px;
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width:50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+    width:20vw;
+   /* height:5vh; */
+    font-size: 4vmin;
+}
+
+h3{
+    font-size: 4vmin;
+}
+#box{
+    margin-top: 15vh;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: #1D1D42; 
+    border-radius: 12px;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+    margin-bottom: 15px;
+}
+
+#input_box{
+    background-color: #1D1D42; 
+    border-radius: 12px;
+    width: 50%;
+    padding:1px;
+    text-align:center;
+    margin: auto;  
+    margin-bottom: 10px;
+    margin-top: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+    
+}
+
+@media only screen and (max-width: 884px) {
+    /* For mobile phones: */
+    #box{
+    /*  width: 85%;*/
+    }
+    a{
+        height:11vmin;
+    }
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  opacity: 0.5; /* Firefox */
+}
+/*#1D1D42 #141432 #524EEE #625EF0 #F2994A*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    
+    background: #141432; 
+    border-radius: 10px;
+    
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #625EF0; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+   /* background: #1D1D42; */
+   cursor: pointer;
+  }
+</style>
+</body>
+</html>

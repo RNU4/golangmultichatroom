@@ -1,0 +1,226 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
+  <head >
+    <title>Melody example: chatting</title>
+  </head>
+
+  <style>
+    body{
+    background-color: #141432;
+    width: 100%;
+    height: 100%;
+    font-family: Helvetica;
+    font-size: 1.5rem;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+#chat_frame{
+    
+    background-color: #1D1D42;
+    width: 50%;
+    height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    padding-top: 25px;
+    border-radius: 25px;
+    position:relative;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+}
+#chat_box{
+    background-color: #1D1D42; 
+    color: black;
+    width: 95%;
+    height: 80%;
+    margin: auto;
+    padding: 5px;
+    border-radius: 12px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+    row-gap: 0px;
+    gap: 0px;
+}
+
+#chat_message{
+    background-color: #625EF0;
+    border-width: px;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+    width: fit-content;
+    margin: 10px;
+}
+#chat_message_name{
+    
+}
+
+#chat_input_frame{
+    background-color: #625EF0;
+    width: 95%;
+    height: 60px;
+    position: absolute;
+    border-color: black;
+    font-size : x-large;
+    bottom:   0;
+    margin-left: 2.5%;
+    margin-bottom: 20px;
+    border-radius: 25px;
+    border-width: 1px;
+    color: black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.547);
+}
+input {
+    max-width: none;
+    outline-style: hidden;
+}
+#chat_input{
+    margin: 0;
+    position: absolute;
+    height:100%;
+    width: 90%;
+    font-size : x-large;
+    margin-left: 5%;
+    background-color: transparent;
+    outline-style:none;
+    outline-color: transparent;
+    border-width: 0px;
+    color: black;
+
+}
+#send_button{
+    float: right;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+button{
+    border-radius: 15px;
+    margin-top: 50%;
+    font-size : x-large;
+    background-color: #90CAF9;
+    border-color: #90CAF9;
+    border-style:solid;
+    background-color: transparent;
+    color: transparent;  
+    text-shadow: 0 0 0 #42A5F5;
+    border-width: 4px;
+}
+button:hover{
+    cursor: pointer;
+}
+
+
+/*#1D1D42 #141432 #524EEE #625EF0 #F2994A*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    
+    background: #141432; 
+    border-radius: 10px;
+    
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #625EF0; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+   /* background: #1D1D42; */
+   cursor: pointer;
+  }
+  </style>
+
+
+  <style>
+    #chat {
+      text-align: left;
+      background: #f1f1f1;
+      width: 500px;
+      min-height: 300px;
+      padding: 20px;
+    }
+
+    @media only screen and (max-width: 900px) {
+    /* For mobile phones: */
+    #chat_frame{
+      width: 85%;
+    }
+
+  }
+  </style>
+
+  <body>
+    <center>
+      <h3 id="name" style = "color: #625EF0;"></h3>
+    </center>
+
+    <div id = "chat_frame">
+      <div id = "chat_box"> 
+      </div>
+      <div id="chat_input_frame"> <input id="chat_input" name="chat" autofocus/> </div>
+  </div>
+  
+<script>
+var url = "ws://" + window.location.host + window.location.pathname + "/ws";
+var ws = new WebSocket(url);
+var names = ["Daisy","Rose","Iris","Narcissus","Orchid","Tulip",
+"Sunflower","Clyclamen","Carnation","Poppy","Pansy","Violet","Mimosa","Daffodil","Lily","Hyacinth","Anemone"
+,"Gladiolus","Bluebell","Bougainvillea","Buttercup","Camellia","Chrysanthemum"]
+var name = names[Math.floor(Math.random() * names.length)]+(Math.floor(Math.random()*9)).toString()
+var channelName = window.location.pathname.split("/")[2];
+var text = document.getElementById("chat_input");
+
+document.getElementById("name").innerText = "Channel: " + channelName;
+
+
+
+var now = function () {
+	var iso = new Date().toISOString();
+	return iso.split("T")[1].split(".")[0];
+};
+//
+
+ws.onmessage = function (msg) {
+	console.log(msg)
+  if (msg.data[0]!='$'){
+
+  var line = /* now() + " " +*/ msg.data + "\n";
+	//chat.innerText += line;
+  document.getElementById("chat_box").innerHTML= '<xmp id = \chat_message\>'+line+'</xmp>'+document.getElementById("chat_box").innerHTML  
+  }else{
+    var spl = msg.data.split(" ")
+    if (spl.length==0)return;
+
+    var opname = spl[0]
+    message = msg.data.substring(opname.length+1);
+    switch (opname){
+      case "$load":
+      console.log("$load")
+        var strarray = message.split("(%nl)")
+        var newstring = ""
+        for (var i = strarray.length-1; i>=0; i--){
+          newstring = newstring+'<xmp id = \chat_message\>'+strarray[i]+'</xmp>'
+        }
+        document.getElementById("chat_box").innerHTML= newstring+document.getElementById("chat_box").innerHTML
+        break;
+    }
+  }
+};
+
+text.onkeydown = function (e) {
+	if (e.keyCode === 13 && text.value !== "") {
+		ws.send(name + " " + text.value);
+		text.value = "";
+	}
+};
+</script>
+
+
+</body>
+</html>
